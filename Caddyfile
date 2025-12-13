@@ -1,0 +1,14 @@
+{
+  auto_https off
+}
+
+{$SERVER_NAME} {
+  root * /app/public
+  encode gzip zstd
+
+  php_server
+
+  try_files {path} {path}/ /index.php?{query}
+
+  file_server
+}

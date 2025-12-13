@@ -1,0 +1,84 @@
+version: "3.9"
+
+services:
+  frankenphp:
+    build: .
+    restart: unless-stopped
+
+    environment:
+      SERVER_NAME: ${SERVER_NAME}
+
+      DB_HOST: mariadb
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+      WP_HOME: ${WP_HOME}
+      WP_SITEURL: ${WP_SITEURL}
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+    volumes:
+      - wordpress_data:/app/public
+
+    depends_on:
+      mariadb:
+        condition: service_started
+      redis:
+        condition: service_started
+
+    deploy:
+      resources:
+        limits:
+          cpus: ${WP_CPU_LIMIT}
+          memory: ${WP_MEMORY_LIMIT}
+
+
+  mariadb:
+    image: mariadb:11.4
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+    deploy:
+      resources:
+        limits:
+          cpus: ${DB_CPU_LIMIT}
+          memory: ${DB_MEMORY_LIMIT}
+
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+
+    command: >
+      redis-server
+      --maxmemory ${REDIS_MAXMEMORY}
+      --maxmemory-policy allkeys-lru
+      --save ""
+      --appendonly no
+
+    deploy:
+      resources:
+        limits:
+          cpus: ${REDIS_CPU_LIMIT}
+          memory: ${REDIS_MEMORY_LIMIT}
+
+
+volumes:
+  wordpress_data:
+    driver: juicefs
+    driver_opts:
+      name: wp-saas
+      subdir: clients/${CLIENT_ID}
+
+  mariadb_data:
+    driver: local

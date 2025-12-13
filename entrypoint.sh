@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -e
+
+echo "⏳ Aguardando MariaDB..."
+
+until mysqladmin ping -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASSWORD" --silent; do
+  sleep 2
+done
+
+echo "✅ MariaDB disponível"
+
+cd /app/public
+
+if [ ! -f wp-config.php ]; then
+  echo "🚀 Instalando WordPress"
+
+  wp core download --quiet
+
+  wp config create \
+    --dbname="$DB_NAME" \
+    --dbuser="$DB_USER" \
+    --dbpass="$DB_PASSWORD" \
+    --dbhost="$DB_HOST" \
+    --skip-check \
+    --quiet
+
+  wp config set WP_HOME "$WP_HOME" --type=constant
+  wp config set WP_SITEURL "$WP_SITEURL" --type=constant
+
+  wp core install \
+    --url="$WP_HOME" \
+    --title="WordPress" \
+    --admin_user=admin \
+    --admin_password="$(openssl rand -base64 20)" \
+    --admin_email=admin@localhost \
+    --skip-email \
+    --quiet
+fi
+
+echo "🚀 Iniciando FrankenPHP"
+exec frankenphp run --config /etc/caddy/Caddyfile
