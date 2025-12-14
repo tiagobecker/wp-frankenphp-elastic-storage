@@ -31,7 +31,7 @@ if [ ! -f wp-config.php ]; then
     --title="WordPress" \
     --admin_user=admin \
     --admin_password="$(openssl rand -base64 20)" \
-    --admin_email=admin@localhost \
+    --admin_email=admin@example.com \
     --skip-email \
     --quiet
 fi
