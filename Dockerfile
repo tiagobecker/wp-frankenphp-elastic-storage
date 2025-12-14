@@ -44,15 +44,21 @@ RUN curl -o /usr/local/bin/wp \
     && chmod +x /usr/local/bin/wp
 
 # Usuário não-root
-RUN useradd -u 1000 -m www-data
+#RUN useradd -u 1000 -m www-data
 
 WORKDIR /app/public
 
 COPY php.ini /usr/local/etc/php/php.ini
 COPY Caddyfile /etc/caddy/Caddyfile
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-USER www-data
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+WORKDIR /app/public
+
+EXPOSE 80
+EXPOSE 443
+
+#USER www-data
+
+CMD ["/bin/bash", "-c", "entrypoint.sh && frankenphp run --config /etc/caddy/Caddyfile"]
