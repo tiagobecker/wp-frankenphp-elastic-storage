@@ -44,7 +44,7 @@ RUN curl -o /usr/local/bin/wp \
     && chmod +x /usr/local/bin/wp
 
 # Usuário não-root
-# RUN useradd -u 1000 -m www-data
+RUN useradd -u 1000 -m www-data
 
 WORKDIR /app/public
 
@@ -53,6 +53,6 @@ COPY Caddyfile /etc/caddy/Caddyfile
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-USER frankenphp
+USER www-data
 
 ENTRYPOINT ["/entrypoint.sh"]
