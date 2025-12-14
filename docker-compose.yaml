@@ -75,7 +75,7 @@ services:
 
 volumes:
   wordpress_data:
-    driver: juicefs
+    driver: juicedata/juicefs
     driver_opts:
       name: wp-saas
       subdir: clients/${CLIENT_ID}
