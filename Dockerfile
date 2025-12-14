@@ -43,14 +43,9 @@ RUN curl -o /usr/local/bin/wp \
     https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x /usr/local/bin/wp
 
-# Usuário não-root
-RUN useradd -u 1000 -m www-data
 
 WORKDIR /app/public
 
-# Garantir permissões para o usuário www-data
-chown -R www-data:www-data /app/public
-chmod -R 755 /app/public
 
 COPY php.ini /usr/local/etc/php/php.ini
 COPY Caddyfile /etc/caddy/Caddyfile

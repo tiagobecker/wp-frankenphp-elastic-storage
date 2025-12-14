@@ -11,12 +11,16 @@ echo "✅ MariaDB disponível"
 
 cd /app/public
 
+# Garantir permissões para o usuário www-data
+chown -R www-data:www-data /app/public
+chmod -R 755 /app/public
+
 if [ ! -f wp-config.php ]; then
   echo "🚀 Instalando WordPress"
 
-  wp core download --quiet
+  wp core download --allow-root --quiet
 
-  wp config create \
+  wp config create --allow-root \
     --dbname="$DB_NAME" \
     --dbuser="$DB_USER" \
     --dbpass="$DB_PASSWORD" \
@@ -24,10 +28,10 @@ if [ ! -f wp-config.php ]; then
     --skip-check \
     --quiet
 
-  wp config set WP_HOME "$WP_HOME" --type=constant
-  wp config set WP_SITEURL "$WP_SITEURL" --type=constant
+  wp config set --allow-root WP_HOME "$WP_HOME" --type=constant
+  wp config set --allow-root WP_SITEURL "$WP_SITEURL" --type=constant
 
-  wp core install \
+  wp core install --allow-root \
     --url="$WP_HOME" \
     --title="WordPress" \
     --admin_user=admin \
