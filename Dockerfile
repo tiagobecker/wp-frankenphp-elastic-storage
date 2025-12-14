@@ -46,8 +46,6 @@ RUN curl -o /usr/local/bin/wp \
 # Usuário não-root
 #RUN useradd -u 1000 -m www-data
 
-WORKDIR /app/public
-
 COPY php.ini /usr/local/etc/php/php.ini
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -55,6 +53,10 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 WORKDIR /app/public
+
+# Garantir permissões para o usuário www-data
+chown -R www-data:www-data /app/public
+chmod -R 755 /app/public
 
 EXPOSE 80
 EXPOSE 443
