@@ -10,11 +10,6 @@ done
 echo "✅ MariaDB disponível"
 
 cd /app/public
-
-# Garantir permissões para o usuário www-data
-chown -R www-data:www-data /app/public
-chmod -R 755 /app/public
-
 if [ ! -f wp-config.php ]; then
   echo "🚀 Instalando WordPress"
 
