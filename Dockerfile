@@ -43,16 +43,11 @@ RUN curl -o /usr/local/bin/wp \
     https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x /usr/local/bin/wp
 
-# Usuário não-root
-RUN useradd -u 1000 -m wp
-
 WORKDIR /app/public
 
 COPY php.ini /usr/local/etc/php/php.ini
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-
-USER wp
 
 ENTRYPOINT ["/entrypoint.sh"]
