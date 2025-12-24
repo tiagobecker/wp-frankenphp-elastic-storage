@@ -78,7 +78,7 @@ services:
           memory: ${REDIS_MEMORY_LIMIT}
 
   quota-setter:
-    image: juicefs/juicefs:latest
+    image: juicedata/juicefs:latest
     command: ["quota", "set", "${METAURL}", "--path", "/mnt/clients/{{CLIENT_ID}}", "--capacity", "${STORAGE_CAPACITY}", "--inodes", "${STORAGE_INODES}"]
     volumes:
       - /mnt/clients:/mnt/clients
