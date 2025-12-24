@@ -78,8 +78,8 @@ services:
           memory: ${REDIS_MEMORY_LIMIT}
 
   quota-setter:
-    image: juicedata/juicefs:latest
-    command: ["quota", "set", "${METAURL}", "--path", "/mnt/clients/{{CLIENT_ID}}", "--capacity", "${STORAGE_CAPACITY}", "--inodes", "${STORAGE_INODES}"]
+    image: alpine:latest
+    command: sh -c "apk add --no-cache curl && curl -L https://github.com/juicedata/juicefs/releases/latest/download/juicefs-x86_64-unknown-linux-musl.tar.gz | tar -xz && mv juicefs /usr/local/bin/ && juicefs quota set ${METAURL} --path /mnt/clients/{{CLIENT_ID}} --capacity ${STORAGE_CAPACITY} --inodes ${STORAGE_INODES}"
     volumes:
       - /mnt/clients:/mnt/clients
     depends_on:
