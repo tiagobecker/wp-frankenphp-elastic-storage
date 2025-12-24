@@ -1,6 +1,26 @@
 #!/usr/bin/env bash
 set -e
 
+echo "🔒 Configurando isolamento de cliente..."
+
+# Create isolated directory for client
+mkdir -p /mnt/clients/${CLIENT_ID}
+
+# If /app/public is not already linked to client directory, create symlink
+if [ ! -L /app/public ]; then
+  echo "🔗 Criando symlink para diretório isolado do cliente ${CLIENT_ID}"
+  # Move any existing content to client directory first
+  if [ -d /app/public ] && [ "$(ls -A /app/public 2>/dev/null)" ]; then
+    echo "📁 Movendo conteúdo existente para /mnt/clients/${CLIENT_ID}"
+    mv /app/public/* /mnt/clients/${CLIENT_ID}/ 2>/dev/null || true
+  fi
+  # Remove the mounted directory and create symlink
+  rm -rf /app/public
+  ln -s /mnt/clients/${CLIENT_ID} /app/public
+fi
+
+echo "✅ Isolamento configurado"
+
 echo "⏳ Aguardando MariaDB..."
 
 until mysqladmin ping -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASSWORD" --silent; do
