@@ -75,10 +75,8 @@ services:
 
 volumes:
   wordpress_data:
-    driver: juicedata/juicefs:1.3.1
-    driver_opts:
-      name: wp-saas
-      subdir: clients/${CLIENT_ID}
+    type: bind
+    source: /mnt/clients/${CLIENT_ID}
 
   mariadb_data:
     driver: local
