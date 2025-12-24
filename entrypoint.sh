@@ -7,11 +7,8 @@ echo "🔒 Configurando isolamento de cliente..."
 mkdir -p /mnt/clients/${CLIENT_ID}
 
 echo "🔒 Baixando JuiceFS..."
-cd /tmp && \
-curl -L -o juicefs.tar.gz https://github.com/juicedata/juicefs/releases/latest/download/juicefs-aarch64-unknown-linux-gnu.tar.gz && \
-tar -xzf juicefs.tar.gz && \
-chmod +x juicefs && \
-mv juicefs /usr/local/bin/
+curl -L -o /usr/local/bin/juicefs https://github.com/juicedata/juicefs/releases/latest/download/juicefs-linux-arm64 && \
+chmod +x /usr/local/bin/juicefs
 
 echo "🔒 Configurando quota para cliente ${CLIENT_ID}..."
 juicefs quota set ${METAURL} --path /mnt/clients/${CLIENT_ID} --capacity ${STORAGE_CAPACITY} --inodes ${STORAGE_INODES}
