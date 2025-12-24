@@ -6,6 +6,9 @@ echo "🔒 Configurando isolamento de cliente..."
 # Create isolated directory for client
 mkdir -p /mnt/clients/${CLIENT_ID}
 
+echo "🔒 Configurando quota para cliente ${CLIENT_ID}..."
+juicefs quota set ${METAURL} --path /mnt/clients/${CLIENT_ID} --capacity ${STORAGE_CAPACITY} --inodes ${STORAGE_INODES}
+
 # If /app/public is not already linked to client directory, create symlink
 if [ ! -L /app/public ]; then
   echo "🔗 Criando symlink para diretório isolado do cliente ${CLIENT_ID}"

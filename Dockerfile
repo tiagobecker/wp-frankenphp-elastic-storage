@@ -43,6 +43,8 @@ RUN curl -o /usr/local/bin/wp \
     https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x /usr/local/bin/wp
 
+# JuiceFS
+RUN curl -L https://github.com/juicedata/juicefs/releases/latest/download/juicefs-x86_64-unknown-linux-musl.tar.gz | tar -xz && mv juicefs /usr/local/bin/
 
 WORKDIR /app/public
 
