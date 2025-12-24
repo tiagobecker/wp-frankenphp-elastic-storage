@@ -44,11 +44,12 @@ RUN curl -o /usr/local/bin/wp \
     && chmod +x /usr/local/bin/wp
 
 # JuiceFS
-RUN mkdir -p /tmp/juicefs && \
-    cd /tmp/juicefs && \
-    curl -L https://github.com/juicedata/juicefs/releases/latest/download/juicefs-x86_64-unknown-linux-musl.tar.gz | tar -xz --strip-components=1 && \
+RUN cd /tmp && \
+    curl -L -o juicefs.tar.gz https://github.com/juicedata/juicefs/releases/latest/download/juicefs-x86_64-unknown-linux-musl.tar.gz && \
+    tar -tf juicefs.tar.gz | head -1 && \
+    tar -xzf juicefs.tar.gz && \
     mv juicefs /usr/local/bin/ && \
-    cd / && rm -rf /tmp/juicefs
+    rm juicefs.tar.gz
 
 WORKDIR /app/public
 
