@@ -25,7 +25,7 @@ services:
       STORAGE_INODES: ${STORAGE_INODES}
 
     volumes:
-      - wordpress_data:/app/public
+      - /mnt/clients/${CLIENT_ID}:/app/public
 
     depends_on:
       mariadb:
@@ -87,9 +87,5 @@ services:
 
 
 volumes:
-  wordpress_data:
-    type: bind
-    source: /mnt/clients/${CLIENT_ID}
-
   mariadb_data:
     driver: local
