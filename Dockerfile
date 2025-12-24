@@ -45,8 +45,7 @@ RUN curl -o /usr/local/bin/wp \
 
 # JuiceFS
 RUN cd /tmp && \
-    curl -L -o juicefs.tar.gz https://github.com/juicedata/juicefs/releases/latest/download/juicefs-x86_64-unknown-linux-musl.tar.gz && \
-    tar -tf juicefs.tar.gz | head -1 && \
+    curl -L -o juicefs.tar.gz https://github.com/juicedata/juicefs/releases/latest/download/juicefs-aarch64-unknown-linux-gnu.tar.gz && \
     tar -xzf juicefs.tar.gz && \
     mv juicefs /usr/local/bin/ && \
     rm juicefs.tar.gz
