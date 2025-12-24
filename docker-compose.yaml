@@ -19,6 +19,11 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
 
+      CLIENT_ID: ${CLIENT_ID}
+      METAURL: ${METAURL}
+      STORAGE_CAPACITY: ${STORAGE_CAPACITY}
+      STORAGE_INODES: ${STORAGE_INODES}
+
     volumes:
       - wordpress_data:/app/public
 
@@ -71,6 +76,14 @@ services:
         limits:
           cpus: ${REDIS_CPU_LIMIT}
           memory: ${REDIS_MEMORY_LIMIT}
+
+  quota-setter:
+    image: juicefs/juicefs:latest
+    command: ["quota", "set", "${METAURL}", "--path", "/mnt/clients/${CLIENT_ID}", "--capacity", "${STORAGE_CAPACITY}", "--inodes", "${STORAGE_INODES}"]
+    volumes:
+      - /mnt/clients:/mnt/clients
+    depends_on:
+      - frankenphp
 
 
 volumes:
