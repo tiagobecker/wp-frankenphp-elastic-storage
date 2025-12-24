@@ -25,7 +25,7 @@ services:
       STORAGE_INODES: ${STORAGE_INODES}
 
     volumes:
-      - /mnt/clients/${CLIENT_ID}:/app/public
+      - /mnt/clients/{{CLIENT_ID}}:/app/public
 
     depends_on:
       mariadb:
@@ -79,7 +79,7 @@ services:
 
   quota-setter:
     image: juicefs/juicefs:latest
-    command: ["quota", "set", "${METAURL}", "--path", "/mnt/clients/${CLIENT_ID}", "--capacity", "${STORAGE_CAPACITY}", "--inodes", "${STORAGE_INODES}"]
+    command: ["quota", "set", "${METAURL}", "--path", "/mnt/clients/{{CLIENT_ID}}", "--capacity", "${STORAGE_CAPACITY}", "--inodes", "${STORAGE_INODES}"]
     volumes:
       - /mnt/clients:/mnt/clients
     depends_on:
